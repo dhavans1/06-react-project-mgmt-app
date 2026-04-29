@@ -1,8 +1,12 @@
+import type { IProjectData } from "../../interfaces/project.interface";
+
 type SidepanelProps = {
-    addProject: (v: boolean) => void
+    projects: IProjectData[];
+    addProject: (v: boolean) => void;
+    onProjectSelection: (pID: number) => void;
 };
 
-export default function Sidepanel({addProject}: SidepanelProps) {
+export default function Sidepanel({projects, addProject, onProjectSelection}: SidepanelProps) {
 
     function handleOnClick() {
         addProject(true);
@@ -14,7 +18,22 @@ export default function Sidepanel({addProject}: SidepanelProps) {
         <button 
             className='p-4 m-6 mt-10 bg-linear-90 from-blue-950 to-blue-600 animate-bounce text-white text-md font-sans font-semibold rounded-2xl border-blue-900 border-2 hover:cursor-pointer hover:animate-pulse hover:bg-blue-950'
             onClick={handleOnClick}
-            >Add New Project</button>
+        >Add New Project</button>
+        {
+            projects.length &&
+            <div className="projects-container w-full">
+                <p className="h-10 font-sans font-semibold text-md bg-linear-0 from-orange-50/80 to-orange-400/80 flex justify-center items-center">Your Projects</p>
+                {
+                    projects.map(p => 
+                        <p
+                            key={p.title}
+                            className="h-10 font-sans font-medium text-white bg-linear-180 from-blue-950 to-blue-800 flex justify-center items-center hover:cursor-pointer hover:animate-pulse hover:animate-duration-10"
+                            onClick={() => onProjectSelection(p.pID)}
+                        >{p.title}</p>
+                    )
+                }
+            </div>
+        }
       </div>  
     );
 }
