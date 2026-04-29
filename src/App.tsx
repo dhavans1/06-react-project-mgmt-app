@@ -6,11 +6,13 @@ import NewProjectModal from './components/NewProjectModal/NewProjectModal';
 import { useEffect, useState } from 'react';
 import type { IProjectData } from './interfaces/project.interface';
 import { addNewProject, retrieveProjects, deleteProject } from './utils/utils';
+import ConfirmationModal from './components/ConfirmationModal/ConfirmationModal';
 
 function App() {
   const [showAddNewProjectModal, updateAddProjectState] = useState(false);
   const [projects, updateProjects] = useState<any>([]);
   const [selectedProject, updateSelectedProject] = useState<IProjectData | null>(null);
+  const [showConfModal, updateConfModalState] = useState(false);
 
   useEffect(() => {
     getProjects();
@@ -43,12 +45,20 @@ function App() {
 
   async function deleteProjectByID(pID: number) {
     console.log('delete ',pID);
+    updateConfModalState(true);
     const res = await deleteProject(pID);
     if (res!) {
       console.log('Project deleted');
       updateSelectedProject(null);
       getProjects();
     }
+  }
+
+  function actionConfirmation(confirm: boolean) {
+    if (confirm) {
+      // delete
+    }
+    updateConfModalState(false);
   }
 
   return (
@@ -62,6 +72,10 @@ function App() {
       {
         showAddNewProjectModal &&
         <NewProjectModal addNewProject={addProject} cancel={cancelAddProject}/>
+      }
+      {
+        showConfModal &&
+        <ConfirmationModal header="Are you sure?" actionConfirmation={actionConfirmation}/>
       }
     </div>
   )

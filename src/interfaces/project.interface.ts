@@ -10,7 +10,6 @@ export interface ITask {
     taskID: number;
     pID: number;
     taskDesc: string;
-    priority: 'Low' | 'Medium' | 'High';
-    status: 'Not Started' | 'In progress' | 'Completed';
+    priority: string;
+    status: string;
 }
-
